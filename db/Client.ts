@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import { Client } from "../types.ts";
-
+import { BookingModelType } from "./Booking.ts";
 
 const Schema=mongoose.Schema;
 
@@ -11,7 +11,7 @@ const ClientSchema=new Schema(
         email: { type: String, required: true, unique: true },
         phoneNumber:{type:String, required: true},
         DNI:{type:String,required:true},
-        bookingsId:[
+        bookingsID:[
             {type:Schema.Types.ObjectId,required:true,ref:"Booking"}
         ]
     },{
@@ -55,7 +55,7 @@ ClientSchema.path("DNI").validate(function(DNI:string){
 })
 export type ClientModelType=mongoose.Document &
     Omit<Client,"id">&{
-        bookingsId:Array<mongoose.Types.ObjectId>
+        bookingsID:Array<mongoose.Types.ObjectId>|BookingModelType[]
     }
 export const ClientModel=mongoose.model<ClientModelType>(
     "Client",

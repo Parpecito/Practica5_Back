@@ -3,22 +3,27 @@ import {Request,Response} from "express"
 import { Client } from "../types.ts";
 import mongoose from "mongoose"
 import { ClientModel } from "../db/Client.ts";
+import { getClientfromModel } from "../controllers/getClientfromModel.ts";
 
-export const getSubject = async (
+export const getClientId = async (
     req: Request<{ id: mongoose.Types.ObjectId }>,
     res: Response<Client | { error: unknown }>
   ) => {
     const id = req.params.id;
     try {
       const client = await ClientModel.findById(id).exec();
-      client?.populate("bookingsID");
-      if (!client) {
-        res.status(404).send({ error: "Subject not found" });
-        return;
-      }
-      //const subjectResponse = await getSubjectFromModel(subject);
-      //res.status(200).json(subjectResponse).send();
+        if (!client) {
+            res.status(404).send({ error: "Client not found" });
+            return;
+        }
+        await client.populate("bookingsID")//Lo que va a pasar es que mongoose cargara automaticamente los datos referenciados(objetos completos) en lugar de solo la id
+        
+        
+        const c=await getClientfromModel(client);
+        res.status(200).json(c).send();
+        
+      
     } catch (error) {
       res.status(500).send(error);
     }
-  };
+};

@@ -8,38 +8,43 @@ const Schema=mongoose.Schema;
 const BookingSchema=new Schema(
     {
         date:{type: Date, default: Date() },
-        idClient:{type:Schema.Types.ObjectId,required:true,ref:"Client"},
-        idRestaurante:{type:Schema.Types.ObjectId,required:true,ref:"Restaurante"},
+        clientID:{type:Schema.Types.ObjectId,required:true,ref:"Client"},
+        restaurantID:{type:Schema.Types.ObjectId,required:true,ref:"Restaurante"},
     },{
         timestamps:true
     }
 )
-BookingSchema.path("idClient").validate(async function(idClient:mongoose.Types.ObjectId){
+BookingSchema.path("clientID").validate(async function(clientID:mongoose.Types.ObjectId){
     try {
-        if (!mongoose.isValidObjectId(idClient)) return false;
-        const cliente = await ClientModel.findById(idClient);
+        if (!mongoose.isValidObjectId(clientID)) return false;
+        const cliente = await ClientModel.findById(clientID);
         if (!cliente) return false;
         return true;
     } catch (_error) {
         return false;
     }
 })
-BookingSchema.path("idRestaurante").validate(async function(idRestaurante:mongoose.Types.ObjectId){
+BookingSchema.path("restaurantID").validate(async function(restaurantID:mongoose.Types.ObjectId){
     try {
-        if (!mongoose.isValidObjectId(idRestaurante)) return false;
-        const restaurante = await RestauranteModel.findById(idRestaurante);
+        if (!mongoose.isValidObjectId(restaurantID)) return false;
+        const restaurante = await RestauranteModel.findById(restaurantID);
         if (!restaurante) return false;
         return true;
     } catch (_error) {
         return false;
     }
 })
+export type BookingModelType = mongoose.Document & Booking;
 
+  
+/*
 export type BookingModelType=mongoose.Document &
-    Omit<Booking,"id"|"client"|"restaurant">&{
-        idClient:mongoose.Types.ObjectId;
-        idRestaurante:mongoose.Types.ObjectId;
+    Omit<Booking,"id">&{
+        clientID:mongoose.Types.ObjectId,
+        restaurantID:mongoose.Types.ObjectId
     }
+
+*/
 export const BookingModel=mongoose.model<BookingModelType>(
     "Booking",
     BookingSchema
