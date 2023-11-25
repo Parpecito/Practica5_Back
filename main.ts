@@ -6,8 +6,8 @@ const MONGO_URL=Deno.env.get("MONGO_URL");
 
 if(!MONGO_URL)
 {
-  console.log("No mongo URl found")
-  Deno.exit(1);
+  
+  throw new Error("No mongo URl found")
 }
 await mongoose.connect(MONGO_URL);
 console.log("Se ha conectado a la base de datos");
