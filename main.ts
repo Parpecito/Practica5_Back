@@ -1,5 +1,5 @@
 // @deno-types="npm:@types/express@4"
-import express from "express"
+import express,{Request,Response} from "express"
 import mongoose from "mongoose"
 
 import {postRestaurant} from "./resolvers/postRestaurant.ts"
@@ -12,10 +12,9 @@ import { deleteRestaurantID } from "./resolvers/deleteRestaurantId.ts"
 
 const MONGO_URL=Deno.env.get("MONGO_URL");
 
-if(!MONGO_URL)
-{
-  console.log("No mongo URl found")
-  Deno.exit(1);
+if (!MONGO_URL) {
+  console.log("No mongo URl found");
+  throw new Error("Mongo URL not found");
 }
 await mongoose.connect(MONGO_URL);
 console.log("Se ha conectado a la base de datos");
