@@ -6,12 +6,14 @@ export const getRestaurantfromModel = async (
   restaurant: RestauranteModelType,
 ): Promise<Restaurante> => { 
   const {_id,name,CIF,address}=restaurant;
-  const booking =await BookingModel.find({clientID:_id}).exec();
-  if(!booking) throw new Error("Book not found")
+  const booking =await BookingModel.find({restaurantID:_id})
+
+  if(!booking){
+      throw new Error("Book not found")
+  } 
   const bookingsID=booking.map((booking)=>{
     return{
         date:booking.date,
-        restaurantID:booking.restaurantID,
         clientID:booking.clientID,
         id:booking._id
         

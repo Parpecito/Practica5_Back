@@ -15,7 +15,6 @@ export const getClientfromModel = async (
     return{
         date:booking.date,
         restaurantID:booking.restaurantID,
-        clientID:booking.clientID,
         id:booking._id
         
     }

@@ -11,12 +11,12 @@ export const getClientId = async (
   ) => {
     const id = req.params.id;
     try {
-      const client = await ClientModel.findById(id).exec();
+      const client = await ClientModel.findById(id).populate("bookingsID")
         if (!client) {
             res.status(404).send({ error: "Client not found" });
             return;
         }
-        await client.populate("bookingsID")//Lo que va a pasar es que mongoose cargara automaticamente los datos referenciados(objetos completos) en lugar de solo la id
+        //Lo que va a pasar es que mongoose cargara automaticamente los datos referenciados(objetos completos) en lugar de solo la id
         
         
         const c=await getClientfromModel(client);
