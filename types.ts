@@ -6,7 +6,7 @@ export type Client={
   email:string,
   phoneNumber:string,
   DNI:string,
-  bookingsID:Array<Omit<Booking,"client">>,
+  bookingsID:Array<Omit<Booking,"clientID">>,
   id:mongoose.Types.ObjectId
 }
 
@@ -14,15 +14,15 @@ export type Restaurante={
   name:string,
   CIF:string,
   address:string,
-  bookingsID:Array<Omit<Booking,"restaurant">>,
+  bookingsID:Array<Omit<Booking,"restaurantID">>,
   id:mongoose.Types.ObjectId
 }
 
 export type Booking={
   date?:Date,
-  clientID?:Omit<Client,"bookings">,
+  clientID?:Omit<Client,"bookingsID">,
   nombre_cliente?:string, //se va a utilizar para la condicion que si al buscar una reserva, se mostrara el nombre del cliente si se ha encontrado ya que el simbolo ? indica que puede ser undefined
-  restaurantID?:Omit<Restaurante,"bookings">
-  id:mongoose.Types.ObjectId,
+  restaurantID?:Omit<Restaurante,"bookingsID">
+  id?:mongoose.Types.ObjectId,
   nombre_restaurante?:string //se va a utilizar para la condicion que si al buscar una reserva, se mostrara el nombre del restaurante si se ha encontrado ya que el simbolo ? indica que puede ser undefined
 }

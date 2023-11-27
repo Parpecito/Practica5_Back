@@ -4,8 +4,6 @@ import { BookingModelType } from "../db/Booking.ts";
 import { Booking } from "../types.ts";
 import { BookingModel } from "../db/Booking.ts";
 import { getBookingfromModel } from "../controllers/getBookingfromModel.ts";
-import { ClientModel } from "../db/Client.ts";
-import { RestauranteModel } from "../db/Restaurant.ts";
 
 export const postBooking = async (
   req: Request<unknown, unknown, BookingModelType>,
@@ -16,11 +14,21 @@ export const postBooking = async (
     
     const booking = new BookingModel({ date,clientID,restaurantID });
     await booking.save();
-    await booking.populate("clientID");
-    await booking.populate("restaurantID")
+    
+    const bookings: Booking = await getBookingfromModel(booking);
 
-    //Al añadir una reservar, en el middleware de guardar, se deberan actualizar las otras dos colecciones
+    res.status(201).json(bookings).send();
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+    
+    /*
+
+
     const guardar_cliente=await ClientModel.findById(clientID);
+
+
    // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     if(guardar_cliente){
         /*const book:Booking={
@@ -29,7 +37,7 @@ export const postBooking = async (
             restaurantID:booking.restaurantID
         
         }
-        */
+        
        // console.log("aaaaaaaaaaaaaaaaaaaaaaabkfkkdkdlld")
         guardar_cliente?.bookingsID.push(booking._id);
        // console.log("aaaaaaaaaaakkksmfksnmfkmsikfniabkfkkdkdlld")
@@ -43,11 +51,6 @@ export const postBooking = async (
     }
 
     //console.log("ccccccccccccccccccccccc")
+    */
     
-    const bookings: Booking = await getBookingfromModel(booking);
-
-    res.status(201).json(bookings).send();
-  } catch (error) {
-    res.status(500).send(error);
-  }
-};
+   

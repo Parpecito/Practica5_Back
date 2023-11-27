@@ -1,5 +1,5 @@
 // @deno-types="npm:@types/express@4"
-import express,{Request,Response} from "express"
+import express from "express"
 import mongoose from "mongoose"
 
 import {postRestaurant} from "./resolvers/postRestaurant.ts"
@@ -9,6 +9,7 @@ import { getClientId } from "./resolvers/getClientId.ts"
 import { postBooking } from "./resolvers/postbookings.ts"
 import { getBookingId } from "./resolvers/getbookingsID.ts"
 import { deleteRestaurantID } from "./resolvers/deleteRestaurantId.ts"
+import { deleteBookingID } from "./resolvers/deleteBookingId.ts"
 
 const MONGO_URL=Deno.env.get("MONGO_URL");
 
@@ -29,6 +30,7 @@ app
   .get("/client/:id",getClientId)
   .get("/booking/:id",getBookingId)
   .delete("/deleterestaurant/:id",deleteRestaurantID)
+  .delete("/deletebooking/:id",deleteBookingID)
   
 app.listen(3000, () => {
   console.log("Server listening on port 3000");

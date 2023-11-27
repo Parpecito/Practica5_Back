@@ -2,29 +2,23 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { RestauranteModel } from "../db/Restaurant.ts";
-import { BookingModel } from "../db/Booking.ts";
-//import { ClientModel } from "../db/Client.ts";
+
 //actualizar cuando se elimine en las otras colecciones
 export const deleteRestaurantID = async (
   req: Request<{ id: mongoose.Types.ObjectId }, unknown>,
   res: Response<string | { error: unknown }>
 ) => {
   const id = req.params.id;
-  const restaurant = await RestauranteModel.findByIdAndDelete(id).exec();
+  const restaurant = await RestauranteModel.findOneAndDelete({_id:id})
   if (!restaurant) {
-    res.status(404).send({ error: "restaurant not found" });
+    res.status(404).send({ error: "Restaurant not found" });
     return;
   }
-  const eliminar_reservas=await BookingModel.deleteMany({restaurantID:id}).exec();
-  if(!eliminar_reservas){
-    res.status(404).send({error:"bookings not found"});
-    return;
-  }
+  
 
+  res.status(200).send("Restaurant deleted");
 
-  res.status(200).send("restaurant deleted");
-
-
+};
 
 
   
@@ -37,4 +31,3 @@ export const deleteRestaurantID = async (
         return;
     }*/
   
-};

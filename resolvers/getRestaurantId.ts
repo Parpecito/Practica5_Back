@@ -11,12 +11,11 @@ export const getRestauranteId = async (
   ) => {
     const id = req.params.id;
     try {
-      const restaurant = await RestauranteModel.findById(id)
+      const restaurant = await RestauranteModel.findOne({_id:id});
         if (!restaurant) {
             res.status(404).send({ error: "Client not found" });
             return;
         }
-        await restaurant.populate("bookingsID")
         
         const restaurantes=await getRestaurantfromModel(restaurant);
         res.status(200).json(restaurantes).send();

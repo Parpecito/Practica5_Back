@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { Client } from "../types.ts";
 import { BookingModelType } from "./Booking.ts";
-
+import { getClientfromModel } from "../controllers/getClientfromModel.ts";
 const Schema=mongoose.Schema;
 
 const ClientSchema=new Schema(
@@ -32,6 +32,28 @@ ClientSchema.path("phoneNumber").validate(function(phoneNumber:string) {
         return false;
     }
     
+})
+ClientSchema.pre("findOne", function (next) {
+    this.populate("bookingsID");
+    next();
+  });
+  
+ClientSchema.post("findOne", async function (doc, next) {
+    if(doc){
+        await getClientfromModel(doc);
+    }
+    next();
+});
+
+ClientSchema.pre("save",function(next){
+    this.populate("bookingsID");
+    next()
+});
+ClientSchema.post("save",async function(doc,next) {
+    if(doc){
+        await getClientfromModel(doc);
+    }
+    next();
 })
 ClientSchema.path("email").validate(function(email:string){
     try {
