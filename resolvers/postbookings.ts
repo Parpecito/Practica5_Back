@@ -5,19 +5,19 @@ import { Booking } from "../types.ts";
 import { BookingModel } from "../db/Booking.ts";
 import { getBookingfromModel } from "../controllers/getBookingfromModel.ts";
 
-export const postBooking = async (
+export const postBooking = async (                                                            //Se va a crear una reserva
   req: Request<unknown, unknown, BookingModelType>,
   res: Response<Booking | { error: unknown }>
 ) => {
   try {
-    const {date,clientID,restaurantID } = req.body;
+    const {date,clientID,restaurantID } = req.body;                                          //Se obtienen los datos de la reserva
     
-    const booking = new BookingModel({ date,clientID,restaurantID });
-    await booking.save();
+    const booking = new BookingModel({ date,clientID,restaurantID });                       //Se crea la reserva con los datos que le pasaremos en el body
+    await booking.save();                                                                  //Se guarda la reserva 
     
-    const bookings: Booking = await getBookingfromModel(booking);
+    const bookings: Booking = await getBookingfromModel(booking);                         //Se obtiene la reserva con el método getBookingfromModel que hemos creado como controlador
 
-    res.status(201).json(bookings).send();
+    res.status(201).json(bookings).send();                                              //Se devuelve la reserva
   } catch (error) {
     res.status(500).send(error);
   }
