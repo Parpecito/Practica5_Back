@@ -62,6 +62,7 @@ ClientSchema.pre("findOne", function (next) {                                   
 ClientSchema.post("findOne", async function (doc, next) {                                                      //Hago un post para que se imprima los valores despues de que se haga la busqueda findOne
     if(doc){
         await getClientfromModel(doc);
+        
     }
     next();
 });

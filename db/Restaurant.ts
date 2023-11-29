@@ -55,7 +55,7 @@ RestauranteSchema.post("save",async function(doc,next) {                        
 RestauranteSchema.post("findOneAndDelete", async function (doc,next) {                               //Hago un post para que se imprima los valores despues de que se haga la busqueda findOneAndDelete
     try {
         await BookingModel.deleteMany({restaurantID:doc._id})
-        await ClientModel.deleteMany({ restaurantID: doc._id })
+        await ClientModel.updateMany({bookingsID:doc._id},{$pull:{bookingsID:doc._id}})
     } catch (error) {
         console.log(error)
     }
@@ -65,10 +65,10 @@ RestauranteSchema.post("findOneAndDelete", async function (doc,next) {          
 RestauranteSchema.post("deleteMany", async function (doc,next) {                                   //Hago un post para que se imprima los valores despues de que se haga la busqueda deleteMany
     try {
         await BookingModel.deleteMany({restaurantID:doc._id})
-        } catch (error) {
-          console.log(error)
-          }
-          next();
+    } catch (error) {
+        console.log(error)
+        }
+        next();
     })
 export type RestauranteModelType = mongoose.Document &
   Omit<Restaurante, "id"> & {
